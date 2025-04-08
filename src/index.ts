@@ -74,7 +74,7 @@ async function updateDialog(message: string, buttons: ButtonSpec[]): Promise<voi
     // We only care about the 'stop' button click here. 'ok' just closes it.
     joplin.views.dialogs.open(recordingDialogHandle).then(result => {
       console.log("Recording dialog resolved:", result);
-      if (result && result.id === 'stop') {
+      if (result && result.id === 'submit') {
         console.log("Stop button clicked in dialog.");
         // Don't await here, let it run in background
         stopRecording();
@@ -173,7 +173,7 @@ async function startRecording() {
     isRecording = true;
 
     // Show status *before* starting recorder logic, include Stop button
-    await updateDialog("🔴 Recording audio...", [{ id: 'stop', title: 'Stop' }]);
+    await updateDialog("🔴 Recording audio...", [{ id: 'submit', title: 'Stop' }]);
 
     mediaRecorder.ondataavailable = (event) => {
       if (event.data.size > 0) {
