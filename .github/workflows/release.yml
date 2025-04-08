@@ -3,7 +3,7 @@ name: Release Joplin Plugin
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*"
 
 permissions:
   contents: write # Needed for softprops/action-gh-release to create release/upload assets
