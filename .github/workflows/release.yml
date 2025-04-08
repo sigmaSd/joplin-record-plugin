@@ -1,0 +1,30 @@
+name: Release Joplin Plugin
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write # Needed for softprops/action-gh-release to create release/upload assets
+
+jobs:
+  build-and-release:
+    name: Build and Release Plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Build plugin
+        run: deno install && deno task dist
+
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./publish/io.sigmasd.record.jpl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

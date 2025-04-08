@@ -2,6 +2,14 @@
 
 This plugin allows you to record audio directly within Joplin using your system's microphone. The recording is then saved as a resource (attachment) to the current note, and a Markdown link to the recording is inserted.
 
+## Installation
+
+1.  Go to the [GitHub Releases page](https://github.com/sigmasd/joplin-record-plugin/releases)
+2.  Download the `io.sigmasd.record.jpl` file from the latest release assets.
+3.  In Joplin, go to `Tools > Options > Plugins`.
+4.  Click `Install plugin` and select the downloaded `.jpl` file.
+5.  Restart Joplin if prompted.
+
 ## Usage
 
 1.  **Install:** Download the `.jpl` file and install it in Joplin via `Tools > Options > Plugins`.
