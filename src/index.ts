@@ -209,7 +209,8 @@ async function startRecording() {
       const fileName = `recording_${timestamp}.${finalFileExtension}`;
 
       await ensureTempDirExists();
-      const tempFilePath = path.join(TEMP_DIR, fileName);
+      // HACK: Joplin renders webm as videos, make it think its a wav file instead
+      const tempFilePath = path.join(TEMP_DIR, fileName).replace(/.webm$/, ".wav");
 
       try {
         const arrayBuffer = await audioBlob.arrayBuffer();
