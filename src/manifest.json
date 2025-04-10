@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "id": "io.sigmasd.record",
   "app_min_version": "3.2",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "name": "Record",
   "description": "Record audio and insert it into a note.",
   "author": "sigmasd",
