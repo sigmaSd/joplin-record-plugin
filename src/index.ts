@@ -185,7 +185,8 @@ async function startRecording() {
     mediaRecorder.onstop = async () => {
       console.log('Recording stopped. Processing audio data...');
       const finalMimeType = usedMimeType; // Capture mime type at stop time
-      const finalFileExtension = fileExtension; // Capture extension
+      // Joplin renders webm by default as video, make it understand that its the audio varient
+      const finalFileExtension = fileExtension === "webm" ? "weba" : fileExtension; // Capture extension
 
       const cleanupStream = () => {
         currentStream?.getTracks().forEach(track => track.stop());
@@ -209,8 +210,7 @@ async function startRecording() {
       const fileName = `recording_${timestamp}.${finalFileExtension}`;
 
       await ensureTempDirExists();
-      // HACK: Joplin renders webm as videos, make it think its a wav file instead
-      const tempFilePath = path.join(TEMP_DIR, fileName).replace(/.webm$/, ".wav");
+      const tempFilePath = path.join(TEMP_DIR, fileName);
 
       try {
         const arrayBuffer = await audioBlob.arrayBuffer();
