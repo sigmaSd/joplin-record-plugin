@@ -16,13 +16,24 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Or your preferred LTS version
+          registry-url: 'https://registry.npmjs.org' # Specify npm registry
+
       - name: Set up Deno
         uses: denoland/setup-deno@v2
 
-      - name: Build plugin
+      - name: Build plugin (.jpl file for GitHub Release)
         run: deno install && deno task dist
 
-      - name: Create Release and Upload Asset
+      - name: Publish package to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Use the secret token
+
+      - name: Create GitHub Release and Upload Asset (.jpl file)
         uses: softprops/action-gh-release@v2
         with:
           files: ./publish/io.sigmasd.record.jpl
