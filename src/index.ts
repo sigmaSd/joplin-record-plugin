@@ -1,6 +1,5 @@
 import joplin from 'api';
 import { MenuItemLocation, ViewHandle, ButtonSpec } from 'api/types'; // Added ViewHandle, ButtonSpec
-import * as moment from 'moment';
 import * as os from 'os';
 import * as path from 'path';
 
@@ -39,6 +38,22 @@ async function cleanupTempDir() {
     console.error('Error cleaning up temporary directory:', error);
   }
 }
+
+/**
+ * Formats a Date object into YYYYMMDD_HHmmss string.
+ * @param date The Date object to format.
+ * @returns The formatted date string.
+ */
+function formatDateForFilename(date: Date): string {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+  return `${year}${month}${day}_${hours}${minutes}${seconds}`;
+}
+
 
 // --- Dialog Handling (Revised with Stop Button) ---
 
@@ -206,7 +221,7 @@ async function startRecording() {
       console.log(`Audio Blob created: ${audioBlob.size} bytes, type: ${audioBlob.type}`);
       audioChunks = []; // Clear chunks array early
 
-      const timestamp = moment().format('YYYYMMDD_HHmmss');
+      const timestamp = formatDateForFilename(new Date());
       const fileName = `recording_${timestamp}.${finalFileExtension}`;
 
       await ensureTempDirExists();
