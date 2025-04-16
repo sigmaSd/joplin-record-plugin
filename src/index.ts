@@ -1,5 +1,6 @@
 import joplin from 'api';
-import { MenuItemLocation, ViewHandle, ButtonSpec } from 'api/types'; // Added ViewHandle, ButtonSpec
+// Added ToolbarButtonLocation
+import { MenuItemLocation, ViewHandle, ButtonSpec, ToolbarButtonLocation } from 'api/types';
 import * as os from 'os';
 import * as path from 'path';
 
@@ -354,7 +355,9 @@ async function stopRecording() {
 // --- Command and Menu Item ---
 
 const COMMAND_NAME = 'toggleAudioRecording';
-const MENU_ITEM_ID = 'audioRecToolsMenuItem';
+const MENU_ITEM_ID_TOOLS = 'audioRecToolsMenuItem'; // Renamed for clarity
+const MENU_ITEM_ID_CONTEXT = 'audioRecContextMenuItem'; // New ID for context menu
+const TOOLBAR_BUTTON_ID = 'audioRecToolbarButton'; // New ID for toolbar button
 const MENU_ITEM_LABEL = 'Toggle Audio Recording';
 
 // --- Plugin Registration ---
@@ -396,12 +399,29 @@ joplin.plugins.register({
       },
     });
 
+    // Add to Tools menu
     await joplin.views.menuItems.create(
-      MENU_ITEM_ID,
+      MENU_ITEM_ID_TOOLS,
       COMMAND_NAME,
       MenuItemLocation.Tools,
-      { accelerator: 'CmdOrCtrl+Alt+R' }
+      { accelerator: 'CmdOrCtrl+Alt+R' } // Keep existing accelerator here
     );
+
+    // Add to Editor Context Menu (right-click in editor)
+    await joplin.views.menuItems.create(
+      MENU_ITEM_ID_CONTEXT,
+      COMMAND_NAME,
+      MenuItemLocation.EditorContextMenu // Add to editor's right-click menu
+      // No accelerator needed here, it's context-specific
+    );
+
+    // Add Toolbar Button
+    await joplin.views.toolbarButtons.create(
+      TOOLBAR_BUTTON_ID,
+      COMMAND_NAME,
+      ToolbarButtonLocation.EditorToolbar // Add to the editor toolbar
+    );
+
 
     console.log('Audio Recorder Plugin started successfully!');
 
